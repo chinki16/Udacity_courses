@@ -37,3 +37,15 @@ by(Facbook$www_likes,Facbook$gender,sum)
 
 #*****Box Plot*****************
 qplot(x=gender,y=friend_count,data = subset(Facbook,!is.na(gender)),geom='boxplot')+ coord_cartesian(ylim = c(0,1000))
+by(Facbook$friend_count,Facbook$gender,summary)
+
+
+summary(Facbook$mobile_likes)
+summary(Facbook$mobile_likes>0)
+mobile_check_in=NA
+Facbook$mobile_check_in=ifelse(Facbook$mobile_likes>0,1,0)
+Facbook$mobile_check_in=factor(Facbook$mobile_check_in)
+summary(Facbook$mobile_check_in)
+percent_mobile_chek_in=(sum(Facbook$mobile_check_in==1)/ length(Facbook$mobile_check_in))*100
+percent_mobile_chek_in                        
+                        
