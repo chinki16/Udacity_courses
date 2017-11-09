@@ -92,3 +92,28 @@ mean(Premium$price)
 mean(Ideal$price)
 ```
 
+In the previous histogram, Scles of y was same for all the cuts. So it was hard to interpret from graph. Now we are changing the scale by just adding scales=free_y
+
+```{r}
+ggplot(aes(x=price),data=diamonds)+geom_histogram(binwidth = 500,col='red')+ggtitle('Histogram of the price')+ylab('Frequency')+xlab('Diamond price')+facet_wrap(~cut,scales="free_y")+theme_minimal()
+```
+ Now figure out price per caret by cut.
+```{r}
+#Histogram of price per caret by cut
+ggplot(aes(x=price/carat),data=diamonds)+geom_histogram(binwidth = 500,col='red')+ggtitle('Histogram of the price per carat')+ylab('Frequency')+xlab('Diamond price per carat')+facet_wrap(~cut,scales="free_y")+theme_minimal()
+```
+ 
+ Using log10 for x 
+```{r}
+ggplot(aes(x=price/carat),data=diamonds)+geom_histogram(binwidth = 0.1,col='red')+ggtitle('Histogram of the price per carat')+ylab('Frequency')+xlab('Diamond price per carat')+facet_wrap(~cut,scales="free_y")+theme_minimal()+scale_x_log10()
+```
+ 
+ 
+ 
+```{r}
+#Plot price and carat by cut
+ggplot(aes(x=price,y=carat),data=diamonds)+geom_line()+ylab('carat')+xlab('Diamond price')+facet_wrap(~cut,scales="free_y")+theme_minimal()
+```
+ 
+ Now it's term of some interesting boxplots 
+ 
