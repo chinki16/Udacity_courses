@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Here is my Friends birthdate analysis.
+1- Export Data from facebook and added to Google calender 
+2- Then exported Google calendar to CSV file
+
+```{r}
+library(ggplot2)
+ggplot(aes(x=Day),data=My_friends)+geom_histogram(binwidth = 0.1,col='red')+ggtitle('Histogram Of days')+facet_wrap(~Month,,scales="free_y")+scale_y_continuous(breaks=c(1:31))+theme_minimal()
+
+```
+
+```{r}
+ggplot(aes(x=Month),data=My_friends)+geom_histogram(binwidth = 1,col='Blue')+theme_bw() +scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9,10,11,12))
+```
+```{r}
+#Number of bdays in each month
+table(My_friends$Month)
+```
+```{r}
+#My Monthly income 
+my_income=1000
+
+#I want to spend 10% friends gift
+gift_limit=my_income*10/100
+gift_limit
+```
+```{r}
+#How much I can spend on each Friend for each month
+gift_limit/table(My_friends$Month)
+```
+```{r}
+plot(gift_limit/table(My_friends$Month),col='red')
+```
+You will be very lucky if your birthday is in the September month as I have more fund for you in that particular month.??????

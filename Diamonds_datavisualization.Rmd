@@ -116,4 +116,137 @@ ggplot(aes(x=price,y=carat),data=diamonds)+geom_line()+ylab('carat')+xlab('Diamo
 ```
  
  Now it's term of some interesting boxplots 
+```{r}
+# Investigate the price of diamonds using box plots
+ggplot(diamonds,aes(factor(cut),price,fill=cut))+geom_boxplot()+ggtitle('Boxplot of price by cut')
+```
+```{r}
+# Investigate the price of diamonds using box plots
+ggplot(diamonds,aes(factor(color),price,fill=color))+geom_boxplot()+ggtitle('Boxplot of price by color')
+```
+```{r}
+#Subsetting the diamonds by color
+D = subset(diamonds,diamonds$color == "D")
+E = subset(diamonds,diamonds$color == "E")
+F = subset(diamonds,diamonds$color == "F")
+G = subset(diamonds,diamonds$color == "G")
+H = subset(diamonds,diamonds$color == "H")
+I = subset(diamonds,diamonds$color == "I")
+J = subset(diamonds,diamonds$color == "J")
+```
  
+```{r}
+summary(D)
+```
+```{r}
+summary(J)
+```
+```{r}
+#IQR of best color
+IQR(D$price)
+```
+```{r}
+#IQR of worst color
+IQR(J$price)
+```
+```{r}
+# Investigate the price per carat of diamonds using box plots
+ggplot(diamonds,aes(factor(color),price/carat,fill=color))+geom_boxplot()+ggtitle('Boxplot of price by color')
+```
+
+```{r}
+#Frequency polygon
+ggplot(data=diamonds, aes(x=carat)) + geom_freqpoly() + ggtitle("Diamond Frequency by Carat") 
+```
+
+```{r}
+# scatterplot of price vs x.
+ggplot(data=diamonds,aes(x=price,y=x))+geom_point()
+```
+```{r}
+#Correlation of price and x
+cor.test(data$price,data$x)
+```
+
+```{r}
+#Correlation of price and y
+cor.test(data$price,data$y)
+```
+
+```{r}
+#Correlation of price and Z
+cor.test(data$price,data$z)
+```
+
+```{r}
+#Create a simple scatter plot of price vs depth
+ggplot(data = diamonds, aes(x = depth, y = price)) + 
+  geom_point(alpha=1/100)+scale_x_continuous(breaks=seq(50,80,1))
+```
+```{r}
+#Correlation of depth and price
+cor.test(diamonds$depth,diamonds$price)
+```
+
+```{r}
+#Create a scatterplot of price vs carat
+#and omit the top 1% of price and carat
+ggplot(aes(carat,price),data=diamonds)+geom_point(position = position_jitter(h=0))
+```
+```{r}
+# Create a scatterplot of price vs. volume (x * y * z)
+# Create a new variable for volume in the diamonds data frame.
+diamonds$volume=diamonds$x*diamonds$y*diamonds$z
+ggplot(data=diamonds,aes(x=volume,y=price))+geom_point()
+```
+```{r}
+#Count of diamonds whoes volume 0 and greater than 800
+library(dplyr)
+diamond_subset=filter(diamonds,!( diamonds$volume >=800 | diamonds$volume==0 ))
+cor.test(diamond_subset$volume,diamond_subset$price)
+```
+```{r}
+#Scatterplot of volume and price excluding volume 0 and greater than 800
+ggplot(aes(x=volume,y=price),data=diamond_subset)+geom_point()+geom_smooth()
+```
+```{r}
+#the data frame diamondsByClarity
+
+diamonds_clarity=group_by(diamonds,clarity)
+diamondsByClarity=summarise(diamonds_clarity,clarity_maen=mean(as.numeric(clarity)),clarity_median=median(as.numeric(clarity)),n=n())
+```
+```{r}
+#First top 6 rows 
+head(diamonds,6)
+```
+```{r}
+#last top 6 rows 
+tail(diamondsByClarity,6)
+```
+```{r}
+# Group by clarity and color
+diamonds_by_clarity <- group_by(diamonds, clarity)
+diamonds_mp_by_clarity <- summarise(diamonds_by_clarity, mean_price = mean(price))
+
+diamonds_by_color <- group_by(diamonds, color)
+diamonds_mp_by_color <- summarise(diamonds_by_color, mean_price = mean(price))
+```
+
+```{r}
+#Barplot of clarity
+
+clarity=ggplot(aes(x=clarity,y=mean_price),data=diamonds_mp_by_clarity)+geom_bar(stat="identity",col='red')
+color=ggplot(aes(x=color,y=mean_price),data=diamonds_mp_by_color)+geom_bar(stat="identity",col='blue')
+grid.arrange(clarity,color,ncol=2)
+
+```
+
+
+
+
+
+
+
+
+
+
