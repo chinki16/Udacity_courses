@@ -237,12 +237,63 @@ diamonds_mp_by_color <- summarise(diamonds_by_color, mean_price = mean(price))
 
 clarity=ggplot(aes(x=clarity,y=mean_price),data=diamonds_mp_by_clarity)+geom_bar(stat="identity",col='red')
 color=ggplot(aes(x=color,y=mean_price),data=diamonds_mp_by_color)+geom_bar(stat="identity",col='blue')
-grid.arrange(clarity,color,ncol=2)
+
 
 ```
 
+```{r}
+#Histogram of price of different colors
+ggplot(aes(x=price),data = diamonds)+geom_histogram(binwidth = 500)+facet_wrap(~color)+scale_fill_brewer(type='qual')
+```
+```{r}
+# Create a scatterplot of diamond price vs cut
+ggplot(aes(x=price,y=table),data=diamonds)+geom_point()+scale_color_brewer(color,type = 'qual')
+```
 
+```{r}
+#scatterplot of diamond price vs volumn
+ggplot(aes(x=price,y=log(x*y*z),color=clarity),data=diamonds)+geom_point()+scale_color_brewer(type='div')
+```
+```{r}
+#Scatterplot of price and weight
+ggplot(data=diamonds,aes(x=carat,y=price))+geom_point(color='blue',alpha=1/4)+scale_x_continuous(lim = c(0,quantile(diamonds$carat,0.99)))+scale_y_continuous(lim = c(0,quantile(diamonds$price,0.99)))+stat_smooth(method = 'lm',color='red')
+```
 
+```{r}
+
+library(GGally)
+library(scales)
+set.seed(123)
+diamond_shap=diamonds[sample(1:length(diamonds$price),10000),]
+ggpairs(diamond_shap)
+```
+```{r}
+library(gridExtra)
+
+plot1 <- ggplot(aes(x=price),data=diamonds)+geom_histogram(binwidth = 0.5,color='red')
+
+plot2 <- ggplot(aes(x=log(price)),data=diamonds)+geom_histogram(binwidth = 0.05,color='blue')
+
+grid.arrange(plot1,plot2,ncol=2)
+```
+```{r}
+#Tranforming plot 
+ggplot(aes(x=carat,y=price),data=diamonds)+geom_point(color='blue')+scale_y_continuous(trans = log10_trans())
+```
+```{r}
+#Carat table
+head(sort(table(diamonds$carat),decreasing = T))
+```
+```{r}
+#Price table
+head(sort(table(diamonds$price),decreasing = T))
+```
+```{r}
+#Liner model
+m1=lm(I(log(price))~ I(carat^(1/3))+carat+cut+clarity,data=diamonds)
+summary(m1)
+
+```
 
 
 
